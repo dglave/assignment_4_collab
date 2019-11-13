@@ -14,7 +14,13 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```{r}
 library(tidyverse)
 library(janitor)
+library(effsize)
+library(kableExtra)
 ```
 
+### Reading in Lobster Abundance Data
 
+```{r}
+lobster_abundance <- read_csv("lobster_abundance_sbc_lter.csv")
+```
 

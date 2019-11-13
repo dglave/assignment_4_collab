@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+knitr::opts_chunk$set(include = FALSE,echo = TRUE, warning = FALSE)
 ```
 
 ### Reading in Packages
@@ -39,8 +39,17 @@ lobster_tidy <- lobster_abundance %>%
 ```
 
 
-### Each lobster now has its own row. 1 variable per column, 1 observation per row AND 1 measurement per cell. 
+#### Each lobster now has its own row. 1 variable per column, 1 observation per row AND 1 measurement per cell. 
 
-### Adding a new column to show the actual date of each lobster observation: 
+#### Adding a new column to show the actual date of each lobster observation: 
 
+
+#### Parsed date_new column to get month and year separated. 
+
+```{r}
+lobster_parse_date <- lobster_tidy %>% 
+  mutate(obs_month = lubridate::month(date, label = TRUE),
+         obs_year = lubridate::year(date))
+view(lobster_parse_date)
+```
 

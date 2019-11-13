@@ -1,0 +1,20 @@
+---
+title: "lobster_abundance_stats"
+author: "Gabriel De La Rosa, Dylan Glave"
+date: "11/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+### Reading in Packages
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+
+

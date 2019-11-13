@@ -61,7 +61,7 @@ lob_year <- lobster_abundance %>%
   group_by(year, site) %>%
   count(year)
 
-#Graph these data...
+#  Graph these data...
 
 site_graph <- ggplot(data = lob_year, aes(x = year, y = n)) +
   geom_col() +
@@ -70,6 +70,26 @@ site_graph <- ggplot(data = lob_year, aes(x = year, y = n)) +
 site_graph
 ```
 
+
+```{r}
+# Results B:
+
+# Pare down data to year, size, site for 2012 and 2018
+
+size_dist <- lobster_parse_date %>% 
+  filter(year == c("2018", "2012")) %>%
+  select(year, size_mm, site) 
+
+# Divide data frame by year
+  
+size_2012 <- size_dist %>% 
+  filter(year == "2012")
+
+# Compare size distributions across sites...
+
+ggplot(data = size_dist, aes(x = size_mm)) +
+  geom_histogram() +
+  facet_wrap(c("site"))
 
 
 

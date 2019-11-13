@@ -9,9 +9,11 @@ output: html_document
 knitr::opts_chunk$set(include = FALSE,echo = TRUE, warning = FALSE)
 ```
 
-### Reading in Packages
+
 
 ```{r}
+### Reading in Packages
+
 library(tidyverse)
 library(janitor)
 library(effsize)
@@ -19,37 +21,56 @@ library(here)
 library(kableExtra)
 ```
 
-### Reading in Lobster Abundance Data
+
 
 ```{r}
+### Reading in Packages
+
 lobster_abundance <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
   clean_names() 
 ```
 
 
-Can I push this back?
-
-view(lobster_abundance)
-
-### Expanding longer with "uncount()" function. Row with "45" lobsters, will now be 45 observations. Removed "count" row and gives each counted lobster its own rown
 
 ```{r}
+### Expanding longer with "uncount()" function. Row with "45" lobsters, will now be 45 observations. Removed "count" row and gives each counted lobster its own rown
+
 lobster_tidy <- lobster_abundance %>% 
   tidyr::uncount(count)
 ```
 
 
+```{r}
 #### Each lobster now has its own row. 1 variable per column, 1 observation per row AND 1 measurement per cell. 
 
-#### Adding a new column to show the actual date of each lobster observation: 
+#### Adding a new column to show the year and month name of each lobster observation: 
 
 
 #### Parsed date_new column to get month and year separated. 
 
-```{r}
 lobster_parse_date <- lobster_tidy %>% 
   mutate(obs_month = lubridate::month(date, label = TRUE),
          obs_year = lubridate::year(date))
 view(lobster_parse_date)
 ```
+
+```{r}
+# Yearly counts by site
+
+lob_year <- lobster_abundance %>% 
+  group_by(year, site) %>%
+  count(year)
+
+#Graph these data...
+
+site_graph <- ggplot(data = lob_year, aes(x = year, y = n)) +
+  geom_col() +
+  facet_wrap("site")
+
+site_graph
+```
+
+
+
+
 

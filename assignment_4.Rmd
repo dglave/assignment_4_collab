@@ -15,14 +15,32 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 library(tidyverse)
 library(janitor)
 library(effsize)
+library(here)
 library(kableExtra)
 ```
 
 ### Reading in Lobster Abundance Data
 
 ```{r}
-lobster_abundance <- read_csv("lobster_abundance_sbc_lter.csv")
+lobster_abundance <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
+  clean_names() 
 ```
 
 
 Can I push this back?
+
+view(lobster_abundance)
+
+### Expanding longer with "uncount()" function. Row with "45" lobsters, will now be 45 observations. Removed "count" row and gives each counted lobster its own rown
+
+```{r}
+lobster_tidy <- lobster_abundance %>% 
+  tidyr::uncount(count)
+```
+
+
+### Each lobster now has its own row. 1 variable per column, 1 observation per row AND 1 measurement per cell. 
+
+### Adding a new column to show the actual date of each lobster observation: 
+
+

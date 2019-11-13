@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = FALSE,echo = TRUE, warning = FALSE)
+knitr::opts_chunk$set(include = FALSE,echo = FALSE, warning = FALSE)
 ```
 
 
@@ -22,14 +22,12 @@ library(kableExtra)
 ```
 
 
-
 ```{r}
-### Reading in Packages
+### Reading in Data
 
 lobster_abundance <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
   clean_names() 
 ```
-
 
 
 ```{r}
@@ -51,6 +49,7 @@ lobster_tidy <- lobster_abundance %>%
 lobster_parse_date <- lobster_tidy %>% 
   mutate(obs_month = lubridate::month(date, label = TRUE),
          obs_year = lubridate::year(date))
+
 view(lobster_parse_date)
 ```
 
@@ -65,7 +64,10 @@ lob_year <- lobster_abundance %>%
 
 site_graph <- ggplot(data = lob_year, aes(x = year, y = n)) +
   geom_col() +
-  facet_wrap("site")
+  facet_wrap("site") +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 550)) +
+  theme_bw() +
+  labs(title = "Yearly lobster counts per site", x = "Lobsters counted", y = "Year")
 
 site_graph
 ```
@@ -85,11 +87,77 @@ size_dist <- lobster_parse_date %>%
 size_2012 <- size_dist %>% 
   filter(year == "2012")
 
-# Compare size distributions across sites...
+size_2018 <- size_dist %>% 
+  filter(year == "2018")
 
-ggplot(data = size_dist, aes(x = size_mm)) +
+# Compare size distributions across sites...
+# For 2012
+size_dist_2012 <- ggplot(data = size_2012, aes(x = size_mm)) +
   geom_histogram() +
   facet_wrap(c("site"))
+
+size_dist_2012
+
+# For 2018
+
+size_dist_2018 <- ggplot(data = size_2018, aes(x = size_mm)) +
+  geom_histogram() +
+  facet_wrap(c("site"))
+
+size_dist_2018
+
+```
+
+
+
+
+## Introduction
+
+
+
+
+
+## Data and Methods
+
+Data for this report were collected and provided by the [Santa Barbara Coastal Long Term Environmental Research](https://portal.edirepository.org/nis/metadataviewer?packageid=knb-lter-sbc.77.3) site. 
+  Lobster surveys were conducted at five different sites along the mainland side of the Santa Barbara Channel: Naples, Isla Vista, Arroyo Quemado, Mowhawk, and Carpenteria. Naples and Isla Vista are contained within a Marine Protected Area; Arroyo Quemado, Mohawk, and Carpenteria are not. Divers performed four 60m x 5m transects at each site, sampling every two to four weeks through the lobster fishing season (October to March). 
+
+Size is a visual estimate of carapace length in mm. 
+
+
+## Results
+
+1. 
+
+```{r, include= TRUE}
+site_graph
+```
+
+
+2. 
+
+
+```{r ,include = TRUE}
+size_dist_2012
+
+size_dist_2018
+```
+
+
+
+
+
+
+
+
+
+## Summary 
+
+
+
+
+## References
+
 
 
 

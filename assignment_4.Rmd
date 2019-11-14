@@ -147,7 +147,19 @@ size_dist_2018
 
 
 
+Part C 
 
+Created MPA, non MPA df
+```{r}
+lobster_mpa <- lobster_parse_date %>% 
+  mutate(mpa =
+    site %in% c( "IVEE", "NAPL")) %>% 
+  filter(mpa == "TRUE")
+```
+
+```{r}
+ggplot(data = lobster_mpa, aes(x = year, y = ))
+```
 
 
 

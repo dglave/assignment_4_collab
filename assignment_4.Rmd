@@ -151,10 +151,70 @@ Part C
 
 Created MPA, non MPA df
 ```{r}
-lobster_mpa <- lobster_parse_date %>% 
+# Make MPA and non MPA dataframes
+
+lobster_mpa_2012 <- lobster_parse_date %>% 
   mutate(mpa =
     site %in% c( "IVEE", "NAPL")) %>% 
-  filter(mpa == "TRUE")
+  filter(mpa == "TRUE") %>% 
+  filter(year == 2012)
+
+lobster_mpa_2018 <- lobster_parse_date %>% 
+  mutate(mpa =
+    site %in% c( "IVEE", "NAPL")) %>% 
+  filter(mpa == "TRUE") %>% 
+  filter(year == 2018)
+
+lobster_non_2012 <- lobster_parse_date %>% 
+  filter(site %in% c("AQUE", "CARP", "MOHK")) %>% 
+  filter(year %in% 2012)
+
+lobster_non_2018 <- lobster_parse_date %>% 
+  filter(site %in% c("AQUE", "CARP", "MOHK")) %>% 
+  filter(year %in% 2018)
+
+
+# Let's take a look at these data visually first...
+
+
+ggplot(data = lobster_mpa_2012, aes(x = size_mm)) +
+  geom_histogram()
+
+ggplot(data = lobster_mpa_2018, aes(x = size_mm)) +
+  geom_histogram()
+
+ggplot(data = lobster_non_2012, aes(x = size_mm)) +
+  geom_histogram()
+
+ggplot(data = lobster_non_2018, aes(x = size_mm)) +
+  geom_histogram()
+
+# See if theres a difference in means between MPA and non-MPA sites in 2012
+
+t_2012 <- t.test(lobster_mpa_2012$size_mm, lobster_non_2012$size_mm)
+
+t_2012
+
+# Now look for 2018...
+
+t_2018 <- t.test(lobster_mpa_2018$size_mm, lobster_non_2018$size_mm)
+
+t_2018
+
+# Then for MPA sites...
+
+t_mpa <- t.test(lobster_mpa_2012$size_mm,
+                lobster_mpa_2018$size_mm)
+
+t_mpa
+
+# Then for non-mpa sites
+
+t_non <- t.test(lobster_non_2012$size_mm,
+                lobster_non_2018$size_mm)
+
+t_non
+
 ```
 
 ```{r}

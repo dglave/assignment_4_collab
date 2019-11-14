@@ -19,6 +19,7 @@ library(janitor)
 library(effsize)
 library(here)
 library(kableExtra)
+library(ggridges)
 ```
 
 
@@ -62,7 +63,8 @@ lob_year <- lobster_abundance %>%
 
 #  Graph these data...
 
-site_graph <- ggplot(data = lob_year, aes(x = year, y = n)) +
+#site_graph <-
+ggplot(data = lob_year, aes(x = year, y = n)) +
   geom_col() +
   facet_wrap("site") +
   scale_y_continuous(expand = c(0,0), limits = c(0, 550)) +
@@ -105,6 +107,22 @@ size_dist_2018 <- ggplot(data = size_2018, aes(x = size_mm)) +
   facet_wrap(c("site"))
 
 size_dist_2018
+
+# Ridgeline plot...
+
+# Change year to discrete...
+year_compare <- size_dist %>% 
+  mutate(year = as.factor(year))
+
+year_compare_graph <- 
+  ggplot(data = year_compare, aes(x = size_mm, 
+                                  fill = year)) +
+  geom_density(alpha = 0.6) +
+  facet_wrap("site") +
+  theme_bw()
+
+year_compare_graph
+  
 
 ```
 

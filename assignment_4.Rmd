@@ -117,9 +117,11 @@ year_compare <- size_dist %>%
 year_compare_graph <- 
   ggplot(data = year_compare, aes(x = size_mm, 
                                   fill = year)) +
-  geom_density(alpha = 0.6) +
+  geom_density(alpha = 0.4, color = "#F9CDAD") +
   facet_wrap("site") +
-  theme_bw()
+  theme_bw() +
+  scale_fill_manual(values = c("#E1F5C4", "#45ADA8")) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 0.06))
 
 year_compare_graph
   

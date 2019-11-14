@@ -162,8 +162,8 @@ lobster_mpa_2012 <- lobster_parse_date %>%
 lobster_mpa_2018 <- lobster_parse_date %>% 
   mutate(mpa =
     site %in% c( "IVEE", "NAPL")) %>% 
-  filter(mpa == "TRUE") %>% 
-  filter(year == 2018)
+  filter(mpa %in% "TRUE") %>% 
+  filter(year %in% 2018)
 
 lobster_non_2012 <- lobster_parse_date %>% 
   filter(site %in% c("AQUE", "CARP", "MOHK")) %>% 

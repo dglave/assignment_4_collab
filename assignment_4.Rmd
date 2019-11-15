@@ -117,32 +117,31 @@ size_dist <- lobster_parse_date %>%
   filter(year == c("2018", "2012")) %>%
   select(year, size_mm, site) 
 
-# Divide data frame by year
-  
-size_2012 <- size_dist %>% 
-  filter(year == "2012")
+### I didn't end up using this, but keeping it around...
 
-size_2018 <- size_dist %>% 
-  filter(year == "2018")
-
-# Compare size distributions across sites...
-# For 2012
-size_dist_2012 <- ggplot(data = size_2012, aes(x = size_mm)) +
-  geom_histogram() +
-  facet_wrap(c("site"))
-
-size_dist_2012
-
-# For 2018
-
-size_dist_2018 <- ggplot(data = size_2018, aes(x = size_mm)) +
-  geom_histogram() +
-  facet_wrap(c("site"))
-
-size_dist_2018
-
-# Ridgeline plot...
-
+# # Divide data frame by year
+#   
+# size_2012 <- size_dist %>% 
+#   filter(year == "2012")
+# 
+# size_2018 <- size_dist %>% 
+#   filter(year == "2018")
+# 
+# # Compare size distributions across sites...
+# # For 2012
+# size_dist_2012 <- ggplot(data = size_2012, aes(x = size_mm)) +
+#   geom_histogram() +
+#   facet_wrap(c("site"))
+# 
+# size_dist_2012
+# 
+# # For 2018
+# 
+# size_dist_2018 <- ggplot(data = size_2018, aes(x = size_mm)) +
+#   geom_histogram() +
+#   facet_wrap(c("site"))
+# 
+# size_dist_2018
 
 
 # And create mean summary statistics for each group, arrange facets so NAPL and IV are next to each other in the graph, add MPA column
@@ -156,6 +155,7 @@ site_mean_mm <- size_dist %>%
   mutate(mpa =
     site %in% c( "IVEE", "NAPL"))
   
+# Ridgeline plot...
 
 year_compare_graph <- 
   ggplot(data = site_mean_mm, 
@@ -221,10 +221,9 @@ site_graph
 2. 
 
 
-```{r ,include = TRUE}
-size_dist_2012
 
-size_dist_2018
+```{r ,include = TRUE}
+year_compare_graph
 ```
 
 
@@ -236,8 +235,10 @@ size_dist_2018
 
 Part C 
 
-Created MPA, non MPA df
+
 ```{r}
+#Created MPA, non MPA df
+
 # Make MPA and non MPA dataframes
 
 lobster_mpa_2012 <- lobster_parse_date %>% 
@@ -312,6 +313,9 @@ t_non
 ```
 
 ```{r}
+
+# Create a summary df with 
+
 lobster_summary <- lobster_parse_date %>% 
    mutate(mpa =
     site %in% c( "IVEE", "NAPL")) %>%
@@ -322,7 +326,7 @@ lobster_summary <- lobster_parse_date %>%
     standard_deviation = round(sd(size_mm, na.rm = TRUE), 2),
     sample_size = n())
 
-# Hey gabe! Trying to remake this table getting a super strange error I can't figure out 
+# Create table
 
 lobster_table <- lobster_summary %>%
   kable(col.names = c("Year",

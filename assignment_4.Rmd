@@ -20,6 +20,7 @@ library(effsize)
 library(here)
 library(kableExtra)
 library(ggridges)
+library(forcats)
 ```
 
 
@@ -110,27 +111,46 @@ size_dist_2018
 
 # Ridgeline plot...
 
-# Change year to discrete...
-year_compare <- size_dist 
-
-year_compare_graph <- 
-  ggplot(data = year_compare, 
-         aes(x = size_mm,
-             )) +
-  geom_density_ridges(alpha = 0.4,
-               aes(y = as.factor(year),
-                   fill = as.factor(year)
-                   )) +
-  scale_fill_manual(values = c("firebrick", "yellow")) +
-  facet_wrap("site") +
-  theme_bw() +
-  scale_y_continuous(expand = c(0, 0), 
-                     limits = c(0, 0.06))
 
 
+# And create mean summary statistics for each group, arrange facets so NAPL and IV are next to each other in the graph, add MPA column
 
-year_compare_graph
+site_mean_mm <- size_dist %>% 
+  mutate(site = as.factor(site) %>% 
+           forcats::fct_relevel("MOHK", "AQUE", "CARP","NAPL","IVEE")) %>% 
+  group_by(site, year) %>% 
+  mutate(mean = 
+           mean(size_mm)) %>% 
+  mutate(mpa =
+    site %in% c( "IVEE", "NAPL"))
   
+
+#year_compare_graph <- 
+
+ggplot(data = site_mean_mm, 
+         aes(x = size_mm,
+             y = as.factor(year))) +
+  
+  geom_density_ridges(alpha = 0.8,
+                      quantile_lines = TRUE,
+                      quantiles = 2,
+                      aes(fill = as.factor(year))
+                      ) +
+  
+  scale_fill_manual(values = c("firebrick", "yellow")) +
+  scale_y_discrete(expand = c(0,0)) +
+  
+  facet_wrap("site",
+             ncol = 3,
+             as.table = F,
+             ) +
+  
+  theme_bw() +
+  
+  labs(y = NULL, x = "Size (mm)", title = "Lobster size distribution between 2012 and 2018", fill = "Year")
+  
+  
+year_compare_graph
 
 ```
 

@@ -164,6 +164,9 @@ size_dist_2018
 ```
 
 
+```{r}
+
+```
 
 
 
@@ -242,6 +245,30 @@ ggplot(data = lobster_mpa, aes(x = year, y = size_mm)) +
   geom_col()
 ```
 
+```{r}
+lobster_summary <- lobster_parse_date %>% 
+   mutate(mpa =
+    site %in% c( "IVEE", "NAPL")) %>%
+  filter(year %in% c("2012", "2018")) %>% 
+  group_by(year, mpa) %>% 
+  summarize(
+    mean_size_mm = round(mean(size_mm, na.rm = TRUE), 2),
+    standard_deviation = round(sd(size_mm, na.rm = TRUE), 2),
+    sample_size = n())
+
+# Hey gabe! Trying to remake this table getting a super strange error I can't figure out 
+
+lobster_summary %>%
+  kable(col.names = c("Year",
+"MPA",
+"Mean Lobster size (mm)",
+"Standard Deviation",
+"Sample Size") %>%
+  kable_styling(bootstrap_options = "striped", 
+                full_width = F,
+                position = "left")) %>%
+  add_header_above(c("Average size of Spiny Lobstersin Santa Barbara" = 5))
+```
 
 
 ## Summary 

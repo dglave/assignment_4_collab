@@ -50,7 +50,9 @@ lobster_tidy <- lobster_abundance %>%
 
 lobster_parse_date <- lobster_tidy %>% 
   mutate(obs_month = lubridate::month(date, label = TRUE),
-         obs_year = lubridate::year(date))
+         obs_year = lubridate::year(date)) %>% 
+  mutate(site = as.factor(site) %>% 
+           forcats::fct_relevel("MOHK", "AQUE", "CARP","NAPL","IVEE"))
 
 view(lobster_parse_date)
 ```
@@ -64,7 +66,7 @@ lob_year <- lobster_abundance %>%
 
 #  Graph these data...
 
-#site_graph <-
+site_graph <-
 ggplot(data = lob_year, aes(x = year, y = n)) +
   geom_col() +
   facet_wrap("site") +
@@ -126,18 +128,22 @@ site_mean_mm <- size_dist %>%
   
 
 #year_compare_graph <- 
-
-ggplot(data = site_mean_mm, 
+  ggplot(data = site_mean_mm, 
          aes(x = size_mm,
              y = as.factor(year))) +
   
-  geom_density_ridges(alpha = 0.8,
+  geom_density_ridges2(alpha = .8,
                       quantile_lines = TRUE,
                       quantiles = 2,
-                      aes(fill = as.factor(year))
+                      color = "white",
+                      aes(fill = as.factor(year),
+                          )
                       ) +
   
-  scale_fill_manual(values = c("firebrick", "yellow")) +
+  scale_fill_manual(values = c("firebrick4", "cadetblue4")) +
+  
+
+  
   scale_y_discrete(expand = c(0,0)) +
   
   facet_wrap("site",
@@ -146,6 +152,8 @@ ggplot(data = site_mean_mm,
              ) +
   
   theme_bw() +
+    
+  theme(legend.position = c(0.75, .85)) +
   
   labs(y = NULL, x = "Size (mm)", title = "Lobster size distribution between 2012 and 2018", fill = "Year")
   
@@ -284,16 +292,18 @@ lobster_summary <- lobster_parse_date %>%
 
 # Hey gabe! Trying to remake this table getting a super strange error I can't figure out 
 
-lobster_summary %>%
+lobster_table <- lobster_summary %>%
   kable(col.names = c("Year",
 "MPA",
 "Mean Lobster size (mm)",
 "Standard Deviation",
-"Sample Size") %>%
-  kable_styling(bootstrap_options = "striped", 
+"Sample Size")) %>%
+ kable_styling(bootstrap_options = "striped", 
                 full_width = F,
-                position = "left")) %>%
+                position = "left")  %>%
   add_header_above(c("Average size of Spiny Lobstersin Santa Barbara" = 5))
+
+lobster_table
 ```
 
 

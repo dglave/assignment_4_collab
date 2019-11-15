@@ -61,18 +61,48 @@ view(lobster_parse_date)
 # Yearly counts by site
 
 lob_year <- lobster_abundance %>% 
-  group_by(year, site) %>%
+  mutate(site = as.factor(site) %>% 
+           forcats::fct_relevel("MOHK", "AQUE", "CARP","NAPL","IVEE")) %>%
+  mutate(mpa =
+    site %in% c( "IVEE", "NAPL")) %>% 
+  group_by(year, site, mpa) %>%
   count(year)
+  
 
 #  Graph these data...
 
 site_graph <-
-ggplot(data = lob_year, aes(x = year, y = n)) +
-  geom_col() +
-  facet_wrap("site") +
+ggplot(data = lob_year, aes(x = year, y = n, fill = mpa, color = mpa)) +
+  geom_line(alpha = 1,
+             size = 1) +
+  
+  
+  geom_ribbon(aes(x=year, xend = year, ymin = 0, ymax = n,
+             fill = mpa)) +
+  
+  scale_fill_manual(values = c("firebrick4", "cadetblue4"),
+                    labels = c("non-MPA", "MPA")) +
+  
+  scale_color_manual(values = c("firebrick4", "cadetblue4"),
+                     labels = c("non-MPA", "MPA")) +
+  
+  facet_wrap("site",
+             as.table = F) +
+  
   scale_y_continuous(expand = c(0,0), limits = c(0, 550)) +
+  scale_x_continuous(expand = c(0,0), 
+                     breaks = c(2013, 2015, 2017)) +
+  
   theme_bw() +
-  labs(title = "Yearly lobster counts per site", x = "Lobsters counted", y = "Year")
+  
+  labs(title = "Yearly lobster counts per site", y = "Lobsters counted", x = NULL, fill = "", color = "") +
+  
+  theme(legend.position = c(0.8, .85),
+        legend.title = NULL) +
+  
+  guides(fill = guide_legend(reverse = TRUE),
+         color = guide_legend(reverse = TRUE))
+
 
 site_graph
 ```
@@ -127,7 +157,7 @@ site_mean_mm <- size_dist %>%
     site %in% c( "IVEE", "NAPL"))
   
 
-#year_compare_graph <- 
+year_compare_graph <- 
   ggplot(data = site_mean_mm, 
          aes(x = size_mm,
              y = as.factor(year))) +
@@ -275,8 +305,10 @@ t_non
 ```
 
 ```{r}
-ggplot(data = lobster_mpa, aes(x = year, y = size_mm)) +
-  geom_col()
+## Do we still need this?
+
+#ggplot(data = lobster_mpa, aes(x = year, y = size_mm)) +
+#  geom_col()
 ```
 
 ```{r}

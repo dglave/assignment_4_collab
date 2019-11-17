@@ -40,6 +40,9 @@ lobster_tidy <- lobster_abundance %>%
 ```
 
 
+
+
+
 ```{r}
 #### Each lobster now has its own row. 1 variable per column, 1 observation per row AND 1 measurement per cell. 
 
@@ -157,24 +160,45 @@ site_mean_mm <- size_dist %>%
   
 # Ridgeline plot...
 
-year_compare_graph <- 
+
+
+#year_compare_graph <- 
   ggplot(data = site_mean_mm, 
          aes(x = size_mm,
              y = as.factor(year))) +
+    
+  geom_rect(data = subset(site_mean_mm,
+                          site == "NAPL")[1,],
+            aes(fill = "MPA"),
+            xmin = -Inf,
+            xmax = Inf,
+            ymin = -Inf,
+            ymax = Inf,
+            alpha = 0.4) +
+
+  geom_rect(data = subset(site_mean_mm,
+                          site == "IVEE")[1,],
+            aes(fill = "MPA"),
+            xmin = -Inf,
+            xmax = Inf,
+            ymin = -Inf,
+            ymax = Inf,
+            alpha = 0.4) +
   
-  geom_density_ridges2(alpha = .8,
+  geom_density_ridges2(alpha = .9,
                       quantile_lines = TRUE,
                       quantiles = 2,
                       color = "white",
-                      aes(fill = as.factor(year),
+                      aes(fill = as.factor(year)
                           )
                       ) +
-  
-  scale_fill_manual(values = c("firebrick4", "cadetblue4")) +
-  
-
+    
+  scale_fill_manual(values = c("firebrick4", "cadetblue4", "cadetblue3"),
+                    breaks = c("2012", "2018")) +
   
   scale_y_discrete(expand = c(0,0)) +
+  
+  scale_x_continuous(expand = c(0,0), limits = c(25, 125)) +
   
   facet_wrap("site",
              ncol = 3,
@@ -183,7 +207,8 @@ year_compare_graph <-
   
   theme_bw() +
     
-  theme(legend.position = c(0.75, .85)) +
+  theme(legend.position = c(0.75, .85),
+        strip.background =element_rect(fill = NA)) +
   
   labs(y = NULL, x = "Size (mm)", title = "Lobster size distribution between 2012 and 2018", fill = "Year")
   
@@ -212,6 +237,10 @@ Size is a visual estimate of carapace length in mm.
 ## Results
 
 1. 
+
+Lobster counts were compared between sites, and between MPA (Naples Reef, Isla Vista) and non-MPA (Mohawk, Arroyo Quemado, Carpenteria) sites. Both MPA sites saw more lobsters in 2018 than in 2012, with the Isla Vista site showing the strongest response (47 lobsters in 2012, 526 lobsters in 2018). Changes is lobster counts in Non-MPA sites varied greatly: Arroyo Quemado remained relatively stable (53 in 2012, 62 in 2018), Mohawk saw counts double (58 in 2012, 101 in 2018), and Carpenteria saw a strong increase in counted lobster (81 in 2012, 248 in 2018). 
+
+
 
 ```{r, include= TRUE}
 site_graph

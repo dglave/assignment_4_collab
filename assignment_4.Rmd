@@ -222,6 +222,7 @@ year_compare_graph
 
 ## Introduction
 
+  The California Spiny Lobster (Panuliris interruptus) is an ecologically important species (Phillips et al., 2013) and a highly valuable commercial fishery (Iacchei et al., 2010) in California. High fishing pressure puts Spiny Lobster at risk of overfishing. To protect the Spiny Lobster and other desirable species from overfishing, 5 mainland Marine Protected Areas (MPA’s) were created along the Santa Barbara coast in 2012. MPA’s ban commercial and non-commercial fishing within their limits. California MPA designation has increased fishery abundance and biomass in both commercially targeted and non-targeted species (Chirico et al., 2017), but MPA effects on lobster abundance are unknown. In this report, we explore how lobster size and abundance is influenced by Marine Protected Area designation.
 
 
 
@@ -379,7 +380,11 @@ lobster_table
 
 ## References
 
+Chirico, A. A. D., McClanahan, T. R., & Eklöf, J. S. (2017). Community- and government-managed marine protected areas increase fish size, biomass and potential value. PLOS ONE, 12(8), e0182342. https://doi.org/10.1371/journal.pone.0182342
 
+Iacchei, M., Robinson, P., & Miller, K. A. (2005). Direct impacts of commercial and recreational fishing on spiny lobster, Panulirus interruptus, populations at Santa Catalina Island, California, United States. New Zealand Journal of Marine and Freshwater Research, 39(6), 1201–1214. https://doi.org/10.1080/00288330.2005.9517386
+
+Phillips, B. F., Wahle, R. A., & Ward, T. J. (2013). Lobsters as Part of Marine Ecosystems – A Review. In Lobsters: Biology, Management, Aquaculture and Fisheries (pp. 1–35). https://doi.org/10.1002/9781118517444.ch1
 
 
 

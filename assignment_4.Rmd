@@ -324,7 +324,7 @@ lobster_table
 
 - Lobsters of the Isla vista site (IVEE) had the largest lobsters of any samples in 2012 (Figure 2). Several lobsters over 100 millimeters in length skewed the data to the right, these lobsters have likely lived within the Marine Protected Area for their entire lives. The second MPA site, Naples, neighbors areas with hunting permitted.
 
-- The three non-protected sites in the study did not see significant growth in lobster totals between the year 2012 and 2018 (Figure 2). The two MPA sites, particularly the protected ones, saw significant increases in lobster abundance over the 6 year period.
+- The three non-protected sites in the study did not see significant growth in lobster totals between the year 2012 and 2018 (Figure 2). The two MPA sites, particularly the protected ones, saw significant increases in lobster abundance over the 6 year period. 
 
 
 ## References

@@ -161,8 +161,7 @@ site_mean_mm <- size_dist %>%
 # Ridgeline plot...
 
 
-
-#year_compare_graph <- 
+year_compare_graph <- 
   ggplot(data = site_mean_mm, 
          aes(x = size_mm,
              y = as.factor(year))) +

@@ -1,5 +1,5 @@
 ---
-title: "lobster_abundance_stats"
+title: "Changes in lobster abundance after implementation of Marine Protected Areas in Santa Barbara, California"
 author: "Gabriel De La Rosa, Dylan Glave"
 date: "11/12/2019"
 output: html_document
@@ -38,10 +38,6 @@ lobster_abundance <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %
 lobster_tidy <- lobster_abundance %>% 
   tidyr::uncount(count)
 ```
-
-
-
-
 
 ```{r}
 #### Each lobster now has its own row. 1 variable per column, 1 observation per row AND 1 measurement per cell. 
@@ -108,6 +104,8 @@ ggplot(data = lob_year, aes(x = year, y = n, fill = mpa, color = mpa)) +
 
 
 site_graph
+
+ggsave("site_graph.png", plot = site_graph, path =  here::here("Figures"))
 ```
 
 
@@ -119,33 +117,6 @@ site_graph
 size_dist <- lobster_parse_date %>% 
   filter(year == c("2018", "2012")) %>%
   select(year, size_mm, site) 
-
-### I didn't end up using this, but keeping it around...
-
-# # Divide data frame by year
-#   
-# size_2012 <- size_dist %>% 
-#   filter(year == "2012")
-# 
-# size_2018 <- size_dist %>% 
-#   filter(year == "2018")
-# 
-# # Compare size distributions across sites...
-# # For 2012
-# size_dist_2012 <- ggplot(data = size_2012, aes(x = size_mm)) +
-#   geom_histogram() +
-#   facet_wrap(c("site"))
-# 
-# size_dist_2012
-# 
-# # For 2018
-# 
-# size_dist_2018 <- ggplot(data = size_2018, aes(x = size_mm)) +
-#   geom_histogram() +
-#   facet_wrap(c("site"))
-# 
-# size_dist_2018
-
 
 # And create mean summary statistics for each group, arrange facets so NAPL and IV are next to each other in the graph, add MPA column
 
@@ -161,8 +132,7 @@ site_mean_mm <- size_dist %>%
 # Ridgeline plot...
 
 
-
-#year_compare_graph <- 
+year_compare_graph <- 
   ggplot(data = site_mean_mm, 
          aes(x = size_mm,
              y = as.factor(year))) +
@@ -198,7 +168,9 @@ site_mean_mm <- size_dist %>%
   
   scale_y_discrete(expand = c(0,0)) +
   
-  scale_x_continuous(expand = c(0,0), limits = c(25, 125)) +
+  scale_x_continuous(expand = c(0,0), 
+                     limits = c(25, 125),
+                     breaks = c(50, 75, 100)) +
   
   facet_wrap("site",
              ncol = 3,
@@ -214,6 +186,8 @@ site_mean_mm <- size_dist %>%
   
   
 year_compare_graph
+
+ggsave("year_compare_graph.png", plot = year_compare_graph, path = here::here("Figures"))
 
 ```
 
@@ -237,34 +211,21 @@ Size is a visual estimate of carapace length in mm.
 
 ## Results
 
-1. 
+### Part A.
 
 Lobster counts were compared between sites, and between MPA (Naples Reef, Isla Vista) and non-MPA (Mohawk, Arroyo Quemado, Carpenteria) sites. Both MPA sites saw more lobsters in 2018 than in 2012, with the Isla Vista site showing the strongest response (47 lobsters in 2012, 526 lobsters in 2018). Changes is lobster counts in Non-MPA sites varied greatly: Arroyo Quemado remained relatively stable (53 in 2012, 62 in 2018), Mohawk saw counts double (58 in 2012, 101 in 2018), and Carpenteria saw a strong increase in counted lobster (81 in 2012, 248 in 2018). 
 
+![**Figure 1.** *Lobster counts per year are graphed by site between 2012 and 2018. Blue plots indicate sites within MPAs, red plots indicate sites outside of MPAs.*](`r here::here("Figures", "site_graph.png")`)
 
 
-```{r, include= TRUE}
-site_graph
-```
+### Part B. 
+
+Through visualizing and interpreting data about the data in 2012 and 2018, we saw some general trends in lobster populations. The outliers that existed in the Isla Vista (IVEE) site were no longer present in the 2018 sample, leaving a more normal distribution at the site. The two MPA sites, Isla Vista and Naples, saw major growth in population sizes over the 6 year period. The 2018 data also is visually steeper, with many more measurements near the mean length at all five sites. The normal distribution of lobster sizes appears to be representative of the entire populations, as researchers were able to take many more samples in 2018, compared to 2012.
+
+![**Figure 2.** *Lobster size distributions are compared between 2012 (red) and 2018 (blue) for each site. Median values are marked as white lines on the density plots. Plots with blue backgrounds represent MPA areas, white backgrounds indicate non-MPA areas. *](`r here::here("Figures", "year_compare_graph.png")`)
 
 
-2. 
-
-
-
-```{r ,include = TRUE}
-year_compare_graph
-```
-
-
-```{r}
-
-```
-
-
-
-Part C 
-
+### Part C 
 
 ```{r}
 #Created MPA, non MPA df
@@ -291,21 +252,6 @@ lobster_non_2018 <- lobster_parse_date %>%
   filter(site %in% c("AQUE", "CARP", "MOHK")) %>% 
   filter(year %in% 2018)
 
-
-# Let's take a look at these data visually first...
-
-
-ggplot(data = lobster_mpa_2012, aes(x = size_mm)) +
-  geom_histogram()
-
-ggplot(data = lobster_mpa_2018, aes(x = size_mm)) +
-  geom_histogram()
-
-ggplot(data = lobster_non_2012, aes(x = size_mm)) +
-  geom_histogram()
-
-ggplot(data = lobster_non_2018, aes(x = size_mm)) +
-  geom_histogram()
 
 # See if theres a difference in means between MPA and non-MPA sites in 2012
 
@@ -335,12 +281,7 @@ t_non
 
 ```
 
-```{r}
-## Do we still need this?
-
-#ggplot(data = lobster_mpa, aes(x = year, y = size_mm)) +
-#  geom_col()
-```
+We explored the data to see if mean sizes of lobsters are not different between years, or between MPA and non-MPA sites.  In 2012 we saw a significant difference between means of lobsters within MPAs, and those outside of MPAs. Lobsters within MPAs were significantly smaller than lobsters in unprotected areas (t(`r round(t_2012$parameter, 2)`) = `r round(t_2012$statistic, 2)`, p < 0.005)).  In 2012, lobsters within MPAs were 11% smaller, with a mean size of 67.4 mm, than lobsters in unprotected areas, where mean size was 74.9. In 2018, however, lobsters within MPAs were significantly bigger than those outside of MPAs (t(`r round(t_2018$parameter, 2)`) = `r round(t_2018$statistic, 2)`, p < 0.005)), the inverse of results from 2012. Lobsters within MPAs were 5% larger on average in size, witha a mean size of 77.6 mm, than non-protected lobsters, with a mean size of 73.6 mm. MPA sites saw a significant increase in lobster size between 2012 and 2018 (t(`r round(t_mpa$parameter, 2)`) = `r round(t_mpa$statistic, 2)`, p < 0.005),  and mean size increased 15% from 67.4 mm in 2012 to 77.6 mm in 2018. Non-MPA lobsters sizes were not significantly different between 2012 and 2018 (t(`r round(t_non$parameter, 2)`) = `r round(t_non$statistic, 2)`, p = `r round(t_non$p.value, 2)`), and mean sizes changed by only a millimeter, from 73 mm in 2012 to 74 mm in 2018.
 
 ```{r}
 
@@ -367,15 +308,23 @@ lobster_table <- lobster_summary %>%
  kable_styling(bootstrap_options = "striped", 
                 full_width = F,
                 position = "left")  %>%
-  add_header_above(c("Average size of Spiny Lobstersin Santa Barbara" = 5))
+  add_header_above(c("Average size of Spiny Lobsters in Santa Barbara" = 5))
 
 lobster_table
+
 ```
+
+`r lobster_table`
+**Table 1.** *Mean lobster size, standard deviation, and sample size calculated for MPA and non-MPA sites*
 
 
 ## Summary 
 
+- In 2012, lobsters were larger in areas where hunting is allowed, and smaller in Marine Protected Areas (Table 1).
 
+- Lobsters of the Isla vista site (IVEE) had the largest lobsters of any samples in 2012 (Figure 2). Several lobsters over 100 millimeters in length skewed the data to the right, these lobsters have likely lived within the Marine Protected Area for their entire lives. The second MPA site, Naples, neighbors areas with hunting permitted.
+
+- The three non-protected sites in the study did not see significant growth in lobster totals between the year 2012 and 2018 (Figure 2). The two MPA sites, particularly the protected ones, saw significant increases in lobster abundance over the 6 year period.
 
 
 ## References

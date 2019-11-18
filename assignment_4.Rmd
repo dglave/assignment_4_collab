@@ -225,7 +225,7 @@ Through visualizing and interpreting data about the data in 2012 and 2018, we sa
 ![**Figure 2.** *Lobster size distributions are compared between 2012 (red) and 2018 (blue) for each site. Median values are marked as white lines on the density plots. Plots with blue backgrounds represent MPA areas, white backgrounds indicate non-MPA areas. *](`r here::here("Figures", "year_compare_graph.png")`)
 
 
-### Part C 
+### Part C. 
 
 ```{r}
 #Created MPA, non MPA df
